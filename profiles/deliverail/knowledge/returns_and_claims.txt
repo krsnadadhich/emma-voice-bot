@@ -1,0 +1,14 @@
+Deliverail - Returns, Damage and Lost Parcels
+
+To send a parcel back, the sender requests a return label within 14 days of
+delivery. Return parcels are priced the same as an outbound parcel.
+
+If a parcel arrives damaged, report it within 48 hours of delivery and keep the
+packaging and the damaged item for inspection.
+
+A parcel is treated as lost after 10 working days with no tracking movement.
+Report it to the customer team and a claim is opened straight away.
+
+Claims are paid up to the protected value of the parcel, which is 50 pounds
+unless extra cover was bought. Approved claims are paid within 5 to 7 working
+days.

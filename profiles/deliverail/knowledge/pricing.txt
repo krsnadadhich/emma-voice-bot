@@ -1,0 +1,16 @@
+Deliverail - Pricing
+
+Prices are per parcel and depend on weight and speed. All prices include VAT.
+
+Up to 2 kilograms: standard 4.99 pounds, next-day 7.99 pounds.
+2 to 10 kilograms: standard 7.99 pounds, next-day 11.99 pounds.
+10 to 25 kilograms: standard 12.99 pounds, next-day 18.99 pounds.
+
+Same-day delivery starts from 14.99 pounds depending on the city zone.
+
+Parcels over 25 kilograms are treated as freight and need a quote from the
+customer team. Every parcel includes protection up to 50 pounds. Extra cover
+costs 1 pound for every 100 pounds of value.
+
+There is no charge for dropping a parcel at one of our depots. A doorstep
+pickup is a flat 2 pounds on top of the delivery price.

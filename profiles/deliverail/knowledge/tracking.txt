@@ -1,0 +1,17 @@
+Deliverail - Tracking an Order
+
+Every order has a six-digit order number, printed on the parcel label and
+included in the confirmation email. Give that number to this phone line and
+we will read out the current status and the expected delivery window.
+
+What each status means:
+- Label created: the order is registered and waiting to be collected.
+- Picked up: the parcel has been collected and is heading to our depot.
+- At depot: the parcel is at a Deliverail depot and is being sorted.
+- Out for delivery: the parcel is on the driver's van and will arrive today.
+- Delivered: the parcel has been handed over or left in the chosen safe place.
+- Delivery failed: the driver could not hand over the parcel.
+- Delayed: the parcel is running late, for example because of weather.
+
+Status updates are refreshed every few hours. The two-hour delivery window is
+confirmed by text message on the morning of delivery.

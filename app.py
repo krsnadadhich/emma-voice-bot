@@ -8,10 +8,11 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VoiceGrant
 from twilio.twiml.voice_response import Connect, VoiceResponse
 import audioop
+import company
 import config
 import log_utils
+import orders
 import pipeline
-import safety
 
 app = Flask(__name__)
 sock = Sock(app)
@@ -23,6 +24,11 @@ SILENCE_FRAMES_TO_TRIGGER = 60  # ~60 * 20ms = 1.2s of silence ends a turn
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/profile")
+def profile():
+    return {"company": company.COMPANY, "assistant": company.ASSISTANT}
 
 
 @app.get("/events")
@@ -61,7 +67,7 @@ def token():
 def voice_webhook():
     """Twilio hits this when a call comes in, whether from call.html or a real number."""
     response = VoiceResponse()
-    response.say("Hello, this is EMMA, your surgery's AI reception assistant. How can I help you today?")
+    response.say(company.GREETING)
     connect = Connect()
     connect.stream(url=f"wss://{request.host}/media-stream")
     response.append(connect)
@@ -77,9 +83,11 @@ def media_stream(ws):
     speaking = False
     booking_history = []  # only used once a booking request is detected, for slot-filling across turns
     booking_active = False
+    awaiting_order = False
+    order_attempts = 0
 
     def handle_turn(mulaw_bytes):
-        nonlocal booking_active
+        nonlocal booking_active, awaiting_order, order_attempts
         try:
             pcm16_8k = audioop.ulaw2lin(mulaw_bytes, 2)
             pcm16_16k, _ = audioop.ratecv(pcm16_8k, 2, 1, 8000, 16000, None)
@@ -88,16 +96,14 @@ def media_stream(ws):
             if not text:
                 return
 
-            urgency = safety.classify_urgency(text)
-            pipeline.log("URGENCY", urgency)
-
-            if urgency == "emergency":
-                # Deterministic, pre-LLM: the LLM is never called on this path.
-                reply = safety.EMERGENCY_MESSAGE
-                pipeline.log("REPLY", reply)
-            elif booking_active or pipeline.is_booking_request(text):
-                booking_active = True
-                reply = pipeline.generate_booking_reply(text, booking_history)
+            if booking_active or pipeline.is_booking_request(text):
+                reply, booked = pipeline.generate_booking_reply(text, booking_history)
+                booking_active = not booked
+                if booked:
+                    booking_history.clear()
+            elif awaiting_order or orders.is_order_query(text) or orders.extract_order_number(text):
+                # Order status comes straight from the database; the LLM is never called on this path.
+                reply, awaiting_order, order_attempts = orders.handle(text, order_attempts)
             else:
                 reply = pipeline.generate_reply(text)
 

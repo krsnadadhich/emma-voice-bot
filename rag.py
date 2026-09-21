@@ -5,9 +5,9 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+import company
 from log_utils import log
 
-KB_DIR = os.path.join(os.path.dirname(__file__), "knowledge_base")
 SIMILARITY_THRESHOLD = 0.35
 TOP_K = 2
 
@@ -18,7 +18,7 @@ _docs = []  # list of (filename, text)
 
 def _load_documents():
     docs = []
-    for path in sorted(glob.glob(os.path.join(KB_DIR, "*.txt"))):
+    for path in sorted(glob.glob(os.path.join(company.KNOWLEDGE_DIR, "*.txt"))):
         with open(path, "r", encoding="utf-8") as f:
             docs.append((os.path.basename(path), f.read().strip()))
     return docs
@@ -31,7 +31,7 @@ def build_index():
     embeddings = _model.encode([text for _, text in _docs], normalize_embeddings=True)
     _index = faiss.IndexFlatIP(embeddings.shape[1])
     _index.add(np.array(embeddings, dtype=np.float32))
-    log("RAG", f"indexed {len(_docs)} documents from knowledge_base/")
+    log("RAG", f"indexed {len(_docs)} documents for {company.COMPANY}")
 
 
 def retrieve(query: str):

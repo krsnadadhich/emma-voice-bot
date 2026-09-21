@@ -25,7 +25,7 @@
 </style>
 </head>
 <body>
-<h1>EMMA Voice Bot Demo</h1>
+<h1 id="title">EMMA Voice Bot Demo</h1>
 <p>Status: <span id="status">loading token...</span></p>
 <button id="callBtn" disabled>Call EMMA</button>
 <button id="hangupBtn" disabled>Hang up</button>
@@ -37,6 +37,7 @@ const statusEl = document.getElementById("status");
 const callBtn = document.getElementById("callBtn");
 const hangupBtn = document.getElementById("hangupBtn");
 const transcriptEl = document.getElementById("transcript");
+const titleEl = document.getElementById("title");
 let device;
 let activeCall;
 
@@ -93,7 +94,16 @@ hangupBtn.addEventListener("click", () => {
     if (activeCall) activeCall.disconnect();
 });
 
+async function loadProfile() {
+    const res = await fetch("/profile");
+    const profile = await res.json();
+    document.title = `${profile.assistant} for ${profile.company}`;
+    titleEl.textContent = `${profile.assistant} — ${profile.company} reception`;
+    callBtn.textContent = `Call ${profile.assistant}`;
+}
+
 connectTranscriptFeed();
+loadProfile().catch((err) => console.error(err));
 
 init().catch((err) => {
     statusEl.textContent = "init failed: " + err.message;

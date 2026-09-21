@@ -1,0 +1,13 @@
+{
+  "company": "Deliverail",
+  "assistant": "EMMA",
+  "description": "a parcel and freight delivery company",
+  "greeting": "Hello, this is EMMA, Deliverail's AI receptionist. I can track an order, book a delivery or pickup slot, or answer questions about our service. How can I help?",
+  "refusal": "I'm sorry, I don't have that information. Please contact the Deliverail customer team and they will be happy to help.",
+  "slot_kinds": {
+    "delivery": ["North zone", "South zone"],
+    "pickup": ["Central depot", "East depot"]
+  },
+  "slot_hours": [9, 11, 13, 15],
+  "slot_days": 5
+}

@@ -1,0 +1,13 @@
+Deliverail - Booking a Pickup
+
+A driver can collect a parcel from your address, Monday to Saturday. Book the
+pickup at least 24 hours ahead through this phone line and pick a time slot.
+
+The parcel must be packed, sealed and labelled before the driver arrives.
+Drivers cannot pack items for you. A single parcel can weigh up to 25
+kilograms for a doorstep pickup.
+
+Doorstep pickup costs a flat 2 pounds. Dropping a parcel at the Central depot
+or the East depot is free and needs no booking.
+
+You can cancel or move a pickup up to 2 hours before the slot at no charge.

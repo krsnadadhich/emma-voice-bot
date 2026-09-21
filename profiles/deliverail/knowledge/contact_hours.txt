@@ -1,0 +1,14 @@
+Deliverail - Customer Team Hours and Depots
+
+The Deliverail customer team is available Monday to Friday, 8:00am to 7:00pm,
+and Saturday, 9:00am to 1:00pm. We are closed on Sundays and bank holidays.
+
+Calls are answered fastest between 10:00am and noon. The busiest time is
+Monday morning, so a call later in the week is usually quicker.
+
+Deliverail runs two public depots for drop-offs and collections:
+- Central depot, open Monday to Saturday, 8:00am to 6:00pm.
+- East depot, open Monday to Friday, 9:00am to 5:00pm.
+
+Outside customer team hours you can still track an order using its six-digit
+order number, and book a delivery or pickup slot through this phone line.
