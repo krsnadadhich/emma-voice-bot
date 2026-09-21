@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EMMA Voice Bot — Demo Call</title>
+<script src="https://unpkg.com/@twilio/voice-sdk@2.11.1/dist/twilio.min.js"></script>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+  #transcript {
+    margin-top: 1.5rem;
+    background: #12181b;
+    color: #d7e0e3;
+    font-family: "Consolas", "Menlo", monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: 0.9rem 1rem;
+    border-radius: 6px;
+    height: 320px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  #transcript .line { padding: 1px 0; }
+  #transcript .placeholder { color: #6b7a80; }
+</style>
+</head>
+<body>
+<h1>EMMA Voice Bot Demo</h1>
+<p>Status: <span id="status">loading token...</span></p>
+<button id="callBtn" disabled>Call EMMA</button>
+<button id="hangupBtn" disabled>Hang up</button>
+
+<div id="transcript"><span class="placeholder">Waiting for a call to start...</span></div>
+
+<script>
+const statusEl = document.getElementById("status");
+const callBtn = document.getElementById("callBtn");
+const hangupBtn = document.getElementById("hangupBtn");
+const transcriptEl = document.getElementById("transcript");
+let device;
+let activeCall;
+
+function appendTranscriptLine(text) {
+    if (transcriptEl.querySelector(".placeholder")) {
+        transcriptEl.innerHTML = "";
+    }
+    const line = document.createElement("div");
+    line.className = "line";
+    line.textContent = text;
+    transcriptEl.appendChild(line);
+    transcriptEl.scrollTop = transcriptEl.scrollHeight;
+}
+
+function connectTranscriptFeed() {
+    const source = new EventSource("/events");
+    source.onmessage = (event) => appendTranscriptLine(event.data);
+    source.onerror = () => {
+        // EventSource auto-reconnects on its own; nothing else to do here.
+    };
+}
+
+async function init() {
+    const res = await fetch("/token");
+    const data = await res.json();
+    device = new Twilio.Device(data.token);
+
+    device.on("registered", () => {
+        statusEl.textContent = "ready";
+        callBtn.disabled = false;
+    });
+    device.on("error", (err) => {
+        statusEl.textContent = "error: " + err.message;
+    });
+
+    await device.register();
+}
+
+callBtn.addEventListener("click", async () => {
+    statusEl.textContent = "calling...";
+    callBtn.disabled = true;
+    activeCall = await device.connect();
+    hangupBtn.disabled = false;
+
+    activeCall.on("accept", () => { statusEl.textContent = "connected"; });
+    activeCall.on("disconnect", () => {
+        statusEl.textContent = "call ended";
+        callBtn.disabled = false;
+        hangupBtn.disabled = true;
+    });
+});
+
+hangupBtn.addEventListener("click", () => {
+    if (activeCall) activeCall.disconnect();
+});
+
+connectTranscriptFeed();
+
+init().catch((err) => {
+    statusEl.textContent = "init failed: " + err.message;
+    console.error(err);
+});
+</script>
+</body>
+</html>

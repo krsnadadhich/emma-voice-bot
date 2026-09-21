@@ -1,0 +1,20 @@
+# Web + telephony
+flask==3.0.3
+twilio==9.3.7
+python-dotenv==1.0.1
+flask-sock==0.7.0
+websockets==13.1
+
+# Speech-to-text
+faster-whisper==1.0.3
+
+# RAG
+faiss-cpu==1.8.0.post1
+sentence-transformers==3.1.1
+
+# Booking database
+mysql-connector-python==9.0.0
+
+# Local LLM client (Ollama itself is installed separately) and text-to-speech
+ollama==0.3.3
+TTS==0.22.0
