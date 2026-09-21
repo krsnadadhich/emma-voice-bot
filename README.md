@@ -105,3 +105,7 @@ static/call.html  browser call page with live transcript
 - **TTS runs on CPU** (the default `pip install TTS` pulls a CPU-only PyTorch), so replies take a moment.
 - **The FAQ path is stateless** across turns; only booking keeps conversation history.
 - **Demo scope:** synthetic data, no authentication, Flask's development server.
+
+## License
+
+MIT. See [LICENSE](LICENSE). Contributions and issues are welcome.
